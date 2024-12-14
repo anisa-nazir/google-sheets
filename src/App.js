@@ -6,6 +6,21 @@ function App() {
   const[columns,setColumns]=React.useState(26);
   const [values,setValues] = useState({})
 
+  const debounce = (fn, delay) => {
+    let timer;
+    return (...args) => {
+      clearTimeout(timer);
+      timer = setTimeout(() => fn(...args), delay);
+    };
+  };
+  
+  const handleInputChange = debounce((key, value) => {
+    setValues((prev) => ({
+      ...prev,
+      [key]: value,
+    }));
+  }, 300);
+  
   const renderInputs = () => {
     let inputs = [];
     for (let r = 0; r <=rows; r++) {
@@ -17,12 +32,9 @@ function App() {
        <td> <span style={{display:"block",width:c==0&&r==0?"46px":"166px",textAlign:"center"}}>{String.fromCharCode(c+64)}</span></td>
       ):row.push(
       <td>
-        <input onChange={(e)=>{
-           setValues(prev=>({
-            ...prev,
-            [`${r},${String.fromCharCode(c+64)}`]:e.target.value
-           }))
-        }} type="text" />
+        <input   onChange={(e) =>
+               handleInputChange(`${r},${String.fromCharCode(c + 64)}`, e.target.value) } 
+               type="text" />
         </td>
       );
       }
