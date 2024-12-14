@@ -20,7 +20,7 @@ function App() {
         <input onChange={(e)=>{
            setValues(prev=>({
             ...prev,
-            [`${r},${c}`]:e.target.value
+            [`${r},${String.fromCharCode(c+64)}`]:e.target.value
            }))
         }} type="text" />
         </td>
